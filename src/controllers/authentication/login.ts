@@ -8,13 +8,16 @@ import { User } from "../../models/users_models";
 async function login_user (req: Request, res: Response){
     try {
         const { username,password } = req.body;
+        console.log(username);
+        console.log(password);
+        console.log(req.body);
         
     // Find the user in the database by username
     const user = await User.findOne({ username });
 
     // Check if the user exists
     if (!user) {
-      return res.status(401).json({ message: 'Authentication failed. User not found.' });
+      return res.status(401).json({ authentication: false, message: 'user' });
     }
 
     // Compare the provided password with the hashed password in the database
@@ -22,10 +25,10 @@ async function login_user (req: Request, res: Response){
 
     // If the passwords don't match, return an error
     if (!passwordMatch) {
-      return res.status(401).json({ message: 'Authentication failed. Incorrect password.' });
+      return res.status(401).json({authentication: false, message: 'password' });
     }
     console.log("user succesfully logged in");
-            return res.status(201).json({ message: 'User login success' });
+            return res.status(201).json({authentication: true, userid: user._id ,message: 'User login success' });
       } 
       catch (error) {
         console.error('Error during login:', error);

@@ -14,7 +14,7 @@ async function signup_user (req: Request, res: Response){
     
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-          return res.status(400).json({ message: 'User already exists' });
+          return res.status(400).json({authentication: false, message: 'user' });
         }
     
         // Hash the password
@@ -30,11 +30,11 @@ async function signup_user (req: Request, res: Response){
         await newUser.save();
     
         console.log("data saved");
-        return res.status(201).json({ message: 'User registered successfully' });
+        return res.status(201).json({ authentication: true, message: 'User registered successfully' });
       } 
       catch (error) {
         console.error('Error during signup:', error);
-        res.status(500).json({ message: error });
+        res.status(500).json({authentication: false, message: "Error doing signup" });
       }
 }
 

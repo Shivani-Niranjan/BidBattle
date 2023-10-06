@@ -12,7 +12,14 @@ async function update_function (req: Request, res: Response){
         const { userId, obj_id, bid_amount } = req.body;
     
         const times: any = await timeline_models.find({ obj_id: obj_id });
+
         const objects: any = await obj_models.find({ _id: obj_id });
+
+        
+        if (objects.owner === times.userId){
+            res.status(404).json("owner cannot be a bidder for same object");
+        }
+        
         if (times[0].bid_amount === 0){
             
             console.log(objects[0].initial_bid)

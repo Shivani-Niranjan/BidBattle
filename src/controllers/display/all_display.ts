@@ -1,18 +1,26 @@
 
 import { Request, Response } from 'express';
 import { obj_models } from '../../models/objects_models';
+import { timeline_models } from '../../models/timeline_models';
+
 
 // all display route
 async function all_display (req: Request, res: Response){
 
     console.log("all_display")
     try {
-        const all = req.params.all;
-        console.log(all);
+        const id = req.params.all;
     
         const all_objects = await obj_models.find();
         console.log(all_objects);
 
+        const obj_list = await all_objects.map(async(obj: any) =>{
+          const timeline: any = await timeline_models.find({ obj_id: obj._id });
+          const [bid_amount, bidder] = [timeline[0]["bid_amount"], timeline[0]["bidder"]];
+          return {...obj._doc, bidder: bidder, bid_amount: bid_amount};
+      });
+      
+      const all_result = await Promise.all(obj_list);
         
         
         // Check if any objects were found
@@ -21,12 +29,12 @@ async function all_display (req: Request, res: Response){
         }
     
         // Return the found all_objects in the response
-        res.status(200).json(all_objects);
+        res.status(200).json(all_result);
       }
 
       catch (error) {
         console.error('Error retrieving all objects', error);
-        res.status(500).json({ message: error });
+        res.status(500).json({ message: "Object not found" });
       }
 }
 

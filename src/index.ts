@@ -14,6 +14,7 @@
 import express, {Application, Request, Response} from "express";
 import mongoose from 'mongoose';
 import multer from "multer";
+import cors from "cors";
 
 // route imports
 import auth_routes from "./routes/auth";
@@ -24,9 +25,10 @@ import display_routes from "./routes/display_route";
 const app: Application = express();
 const port: number = 5005;
 const upload = multer();
-
+app.use(express.static("./BidBattle_Frontend"))
 app.use(express.urlencoded({extended: true}));
 app.use(express.json())
+app.use(cors())
 // app.use(upload.array(object_routes))
 
 

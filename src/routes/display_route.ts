@@ -10,7 +10,7 @@ const display_routes = Router();
 console.log("I am inside display");
 
 display_routes.get("/owner/:owner", owner_display);
-display_routes.post("/all",all_display)
+display_routes.post("/all/:all",all_display);
 display_routes.get("/bidder/:bidder", bidder_display);
 // display_routes.post("/login", login_user);
 

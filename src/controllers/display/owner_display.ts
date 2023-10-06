@@ -32,7 +32,7 @@ async function owner_display (req: Request, res: Response){
 
       catch (error) {
         console.error('Error retrieving owners list', error);
-        res.status(500).json({ message: error });
+        res.status(500).json({ message: "owner not found" });
       }
 }
 
