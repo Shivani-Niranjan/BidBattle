@@ -2,7 +2,7 @@
 import { Request, Response } from 'express';
 import { obj_models } from '../../models/objects_models';
 import { timeline_models } from '../../models/timeline_models';
-
+import { User } from '../../models/users_models';
 
 // all display route
 async function all_display (req: Request, res: Response){
@@ -17,7 +17,10 @@ async function all_display (req: Request, res: Response){
         const obj_list = await all_objects.map(async(obj: any) =>{
           const timeline: any = await timeline_models.find({ obj_id: obj._id });
           const [bid_amount, bidder] = [timeline[0]["bid_amount"], timeline[0]["bidder"]];
-          return {...obj._doc, bidder: bidder, bid_amount: bid_amount};
+
+          const userObj: any = await User.find({ _id: obj.owner });
+          const bidderObj: any = await User.find({ _id: bidder });
+          return {...obj._doc, bidder: bidder, bid_amount: bid_amount, owner_name: userObj[0]["username"], bidder_name: (bidderObj[0] && bidderObj[0]["username"]) || ""};
       });
       
       const all_result = await Promise.all(obj_list);

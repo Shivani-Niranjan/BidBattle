@@ -13,7 +13,7 @@ async function bidder_display (req: Request, res: Response){
     
         // Use the bidderId to find objects owned by that user
         const times: any = await timeline_models.find({ bidder: bidder });
-        console.log(times);//okay
+        console.log(times); //okay
         
         const times_list = await times.map(async(obj: any) => {
             const objects: any = await obj_models.find({ _id: obj.obj_id });

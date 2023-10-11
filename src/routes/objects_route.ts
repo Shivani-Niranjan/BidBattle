@@ -29,8 +29,8 @@ var upload = multer({
     }
 });
 
-object_routes.post("/create", upload.single("obj_pic"), objects_create); 
-object_routes.post("/update", update_function)
+object_routes.post("/create/:owner", upload.single("obj_pic"), objects_create); 
+object_routes.get("/update", update_function)
 
 // object routes
 console.log("I am inside object");
